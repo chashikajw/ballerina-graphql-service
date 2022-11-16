@@ -62,7 +62,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "http"
-version = "2.4.3"
+version = "2.4.4"
 dependencies = [
 	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "cache"},
@@ -243,17 +243,6 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
-name = "sql"
-version = "1.5.0"
-dependencies = [
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.object"},
-	{org = "ballerina", name = "time"}
-]
-
-[[package]]
-org = "ballerina"
 name = "task"
 version = "2.2.2"
 dependencies = [
@@ -290,28 +279,12 @@ modules = [
 ]
 
 [[package]]
-org = "ballerinax"
-name = "mysql"
-version = "1.5.0"
-dependencies = [
-	{org = "ballerina", name = "crypto"},
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "sql"},
-	{org = "ballerina", name = "time"}
-]
-modules = [
-	{org = "ballerinax", packageName = "mysql", moduleName = "mysql"}
-]
-
-[[package]]
 org = "chashika"
 name = "restbackend"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
-	{org = "ballerinai", name = "observe"},
-	{org = "ballerinax", name = "mysql"}
+	{org = "ballerinai", name = "observe"}
 ]
 modules = [
 	{org = "chashika", packageName = "restbackend", moduleName = "restbackend"}

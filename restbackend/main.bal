@@ -1,7 +1,5 @@
 import ballerina/http;
-import ballerinax/mysql;
 
-mysql:Client dbClient = check new (database = "ORDER_DB", user = "root", password = "root");
 
 public type OrderData record {
     int id;
@@ -24,16 +22,6 @@ public type ProductData record {
 };
 
 function getOrderData(int id) returns OrderData {
-    // stream<OrderData, sql:Error?> rs = dbClient->query(`SELECT id, customerId, shipperId, date, notes 
-    //                                               FROM ORDERS WHERE id = ${id}`, OrderData);
-    // record {|record {} value;|}? rec = check rs.next();
-
-    // check rs.close();
-    // if !(rec is ()) {
-    //     return (<OrderData>rec["value"]);
-    // } else {
-    //     return error(string `Invalid order: ${id}`);
-    // }
 
     OrderData orderData = {
         id: 1,
@@ -47,15 +35,6 @@ function getOrderData(int id) returns OrderData {
 }
 
 function getCustomerData(int id) returns CustomerData|error {
-    // stream<CustomerData, sql:Error?> rs = dbClient->query(`SELECT id, name, address
-    //                                               FROM CUSTOMER WHERE id = ${id}`, CustomerData);
-    // record {|record {} value;|}? rec = check rs.next();
-    // check rs.close();
-    // if !(rec is ()) {
-    //     return (<CustomerData>rec["value"]);
-    // } else {
-    //     return error(string `Invalid customer: ${id}`);
-    // }
 
     CustomerData customerData = {
         id: 1,
@@ -67,15 +46,6 @@ function getCustomerData(int id) returns CustomerData|error {
 }
 
 function getProductData(int id) returns ProductData|error {
-    // stream<ProductData, sql:Error?> rs = dbClient->query(`SELECT id, name, phone
-    //                                               FROM SHIPPER WHERE id = ${id}`, ProductData);
-    // record {|record {} value;|}? rec = check rs.next();
-    // check rs.close();
-    // if !(rec is ()) {
-    //     return (<ProductData>rec["value"]);
-    // } else {
-    //     return error(string `Invalid product: ${id}`);
-    // }
 
     ProductData productData = {
         id: 1,
@@ -130,4 +100,3 @@ service / on new http:Listener(8085) {
         };
     }
 }
-
