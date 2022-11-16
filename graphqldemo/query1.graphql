@@ -1,0 +1,8 @@
+query{
+   order(id:1){
+    notes
+    customer {name}
+    product {name}  
+   }
+
+}
