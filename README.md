@@ -1,4 +1,4 @@
-# ballerina-graphql-service
+# ballerina-service-orchestration
 
 We are using the ballerina since Ballerina has first-class support for a lot of different network protocols such as HTTP, GraphQL, Websocket, gRPC, etc.
 
@@ -22,7 +22,7 @@ We are using the ballerina since Ballerina has first-class support for a lot of 
     ```
 2. Start the API Manager
 
-3. Create 3 APIs in the API Manager
+3. Create 3 APIs in the API Manager and deploy
 
     - CustomerAPI
         - Context: /customerapi
@@ -43,8 +43,9 @@ We are using the ballerina since Ballerina has first-class support for a lot of 
         - Resources
             - GET - products/{id}
             - POST - order
+4. Create a application in devportal and subscribe to the API.
 
-4. Start the GraphqlService and RestServicce
+5. Start the GraphqlService and RestServicce
     ```
     bal run graphqldemo
     ```
@@ -64,6 +65,25 @@ We are using the ballerina since Ballerina has first-class support for a lot of 
         curl -X POST -H "Content-type: application/json" -d '{ "query": "mutation { orderForLuckyCustomer(city: \"Mr. Lambert\") {     notes, date } }" }' 'http://localhost:8089/graphql'
         ```
 
+6. Expose newly created REST API in the API Manager
+
+    - CusomizedAPI
+        - Context: /customizedAPI
+        - Version: 1.0.0
+        - Endpoint: http://localhost:8088
+        - Resources
+            - POST - orderForLuckyCustomer
+
+7. Expose newly created GraphQL API in the API Manager
+
+    - CusomizedAPI
+        - Shema (Located in resources folder)
+        - Context: /LuckyCustomerOrder
+        - Version: 1.0.0
+        - Endpoint: http://localhost:8089/graphql
+
+
+
 ## References
 
 1. Provide values to configurable variables
@@ -78,9 +98,11 @@ We are using the ballerina since Ballerina has first-class support for a lot of 
 3. OAuth2 client credentials grant configurations for OAuth2 authentication
     - https://lib.ballerina.io/ballerina/http/latest/records/OAuth2ClientCredentialsGrantConfig
 
+4. Create REST Services using Ballerina
+    - https://ballerina.io/learn/write-a-restful-api-with-ballerina/
 
+5.  Create a GraphQL service using Ballerina
+    - https://ballerina.io/learn/write-a-graphql-api-with-ballerina/
 
-
-
-4. Create GraphQL API in the API Manager
+6. Create GraphQL API in the API Manager
     - https://apim.docs.wso2.com/en/latest/tutorials/create-and-publish-a-graphql-api/#step-2-design-a-graphql-api
