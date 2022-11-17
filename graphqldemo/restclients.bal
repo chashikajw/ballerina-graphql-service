@@ -1,8 +1,8 @@
 import ballerina/http;
 
 configurable string tokenUrl = "https://localhost:9443/oauth2/token";
-configurable string clientId = "qxklSKGyCKQRkB4L1s75NmQwzyEa";
-configurable string clientSecret = "M1NAtXw1Ptr8GWgVHxtARa1J4MIa";
+configurable string clientId = "zccvyvQDnPGfXn0qJWgzsi0YDO0a";
+configurable string clientSecret = "6coNP10oOshE8KKxiakn3Vx31wwa";
 
 // Use client credentials grant type to generate token
 

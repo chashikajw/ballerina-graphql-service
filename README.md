@@ -1,5 +1,7 @@
 # ballerina-graphql-service
 
+We are using the ballerina since Ballerina has first-class support for a lot of different network protocols such as HTTP, GraphQL, Websocket, gRPC, etc.
+
 ## prerequisite
 1. Install the ballerina 
     - https://ballerina.io/learn/install-ballerina/set-up-ballerina/
@@ -8,6 +10,9 @@
 
 3. Download the API Manager
     - https://wso2.com/api-manager/
+
+## Solution
+![Solution](https://github.com/chashikajw/ballerina-graphql-service/blob/main/images/Solution.png)
 
 ## Steps to excute the solution
 
