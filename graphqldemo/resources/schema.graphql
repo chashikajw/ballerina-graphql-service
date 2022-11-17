@@ -12,7 +12,7 @@ type Query {
 
 # The mutation type, represents all updates we can make to our data
 type Mutation {
-  createOrderForLuckyCustomer(city: String): Order
+  orderForLuckyCustomer(city: String): Order
 }
  
 type Order {

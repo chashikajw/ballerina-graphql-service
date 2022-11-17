@@ -2,33 +2,29 @@ import ballerina/http;
 
 service / on new http:Listener(8088) {
 
-    resource function post createOrderForLuckyCustomer(@http:Payload string city)
-                                returns json|error {
+    resource function post orderForLuckyCustomer(@http:Payload string city)
+                                returns LuckyCustomerOrderData|error {
+                               
+        CustomerData luckyCustomer = check customerAPISecuredEP->get("/customers/1");
+        ProductData promotionalProduct = check productAPISecuredEP->get("/products/1");
 
-        CustomerData|error luckyCustomer = check customerAPISecuredEP->get("/getCustomer/1");
-        ProductData|error promotionalProduct = check productAPISecuredEP->get("/getProduct/1");
+        json payload = {"id": 2, "customerId": luckyCustomer.id, "productId": promotionalProduct.id, "date": "2022/11/17", "notes": "luckyCustomer order"};
 
-        if (promotionalProduct is ProductData && luckyCustomer is CustomerData) {
-            json payload = {"id": 2, "customerId": luckyCustomer.id, "productId": promotionalProduct.id, "date": "2022/11/17", "notes": "luckyCustomer order"};
+        OrderData|error orderDataResponse = orderAPISecuredEP->post("/order", payload);
 
-            OrderData|error orderDataResponse = check orderAPISecuredEP->post("/createOrder", payload);
+        if (orderDataResponse is OrderData) {
+            LuckyCustomerOrderData  luckyCustomerOrderData = {
+                id: orderDataResponse.id,
+                city: city,
+                date: orderDataResponse.date,
+                notes: orderDataResponse.notes,
+                customerId: orderDataResponse.customerId,
+                productId: orderDataResponse.productId
+            };
 
-            if (orderDataResponse is OrderData) {
-                return {
-                    id: orderDataResponse.id,
-                    city: city,
-                    customerId: orderDataResponse.customerId,
-                    productId: orderDataResponse.productId,
-                    date: orderDataResponse.date,
-                    notes: orderDataResponse.notes
-                };
-            } else {
-                return error(string `lucky customer order creation failed: ${city}`);
-            }
-
+            return luckyCustomerOrderData;
         } else {
-            return error(string `lucky customer order creation failed while retreiving data: ${city}`);
+            return error(string `lucky customer order creation failed: ${city}`);
         }
-
     }
 }

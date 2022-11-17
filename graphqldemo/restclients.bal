@@ -6,7 +6,7 @@ configurable string clientSecret = "M1NAtXw1Ptr8GWgVHxtARa1J4MIa";
 
 // Use client credentials grant type to generate token
 
-http:Client productAPISecuredEP = check new ("https://localhost:8243/productapi/1.0.0",
+final http:Client productAPISecuredEP = check new ("https://localhost:8243/productapi/1.0.0",
     auth = {
     tokenUrl: tokenUrl,
     clientId: clientId,
@@ -22,7 +22,7 @@ http:Client productAPISecuredEP = check new ("https://localhost:8243/productapi/
 }
 );
 
-http:Client customerAPISecuredEP = check new ("https://localhost:8243/customerapi/1.0.0",
+final http:Client customerAPISecuredEP = check new ("https://localhost:8243/customerapi/1.0.0",
     auth = {
     tokenUrl: tokenUrl,
     clientId: clientId,
@@ -38,7 +38,7 @@ http:Client customerAPISecuredEP = check new ("https://localhost:8243/customerap
 }
 );
 
-http:Client orderAPISecuredEP = check new ("https://localhost:8243/orderapi/1.0.0",
+final http:Client orderAPISecuredEP = check new ("https://localhost:8243/orderapi/1.0.0",
     auth = {
     tokenUrl: tokenUrl,
     clientId: clientId,

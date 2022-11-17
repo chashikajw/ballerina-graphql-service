@@ -58,39 +58,35 @@ function getProductData(int id) returns ProductData|error {
 
 service / on new http:Listener(8085) {
 
-    resource function get getOrder/[int orderId]() returns json|error {
+    resource function get orders/[int orderId]() returns OrderData|error {
         OrderData|error orderData = getOrderData(orderId);
         if orderData is error {
             return error("Invalid order id");
         } else {
-            json orderDataJsonResponse = orderData.toJson();
-            return orderDataJsonResponse;
+            return orderData;
         }
     }
 
-    resource function get getCustomer/[int customerId]() returns json|error {
+    resource function get customers/[int customerId]() returns CustomerData|error {
         CustomerData|error customerData = getCustomerData(customerId);
         if customerData is error {
             return error("Invalid customer id");
         } else {
-            json orderDataJsonResponse = customerData.toJson();
-            return orderDataJsonResponse;
+            return customerData;
         }
     }
 
-    resource function get getProduct/[int productId]() returns json|error {
+    resource function get products/[int productId]() returns ProductData|error {
         ProductData|error productData = getProductData(productId);
         if productData is error {
             return error("Invalid product id");
         } else {
-            json shipperDataJsonResponse = productData.toJson();
-            return shipperDataJsonResponse;
+            return productData;
         }
     }
 
-    resource function post createOrder(@http:Payload OrderData orderData)
+    resource function post 'order(@http:Payload OrderData orderData)
                                 returns json {
-
         return {
             id: orderData.id,
             customerId: orderData.customerId,

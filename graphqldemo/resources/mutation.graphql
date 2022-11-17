@@ -1,0 +1,9 @@
+mutation {
+  orderForLuckyCustomer(city: "texas") {
+    id
+    notes
+    customer {
+      id
+    }
+  }
+}

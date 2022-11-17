@@ -1,4 +1,4 @@
-public type OrderData record {
+public type OrderData readonly & record {
     int id;
     int customerId;
     int productId;
@@ -16,6 +16,15 @@ public type ProductData record {
     int id;
     string name;
     string description;
+};
+
+public type LuckyCustomerOrderData readonly & record {
+    int id;
+    string city;
+    int customerId;
+    int productId;
+    string date;
+    string notes;
 };
 
 
@@ -41,12 +50,12 @@ service class Customer {
     }
 }
 
-service class Product {
+isolated service class Product {
 
-    private ProductData data;
+    private final ProductData & readonly data;
 
     function init(ProductData data) {
-        self.data = data;
+        self.data = data.cloneReadOnly();
     } 
 
     resource function get id() returns int {
@@ -62,9 +71,9 @@ service class Product {
     }
 }
 
-service class Order {
+isolated service class Order {
 
-    private OrderData data;
+    private final OrderData data;
 
     function init(OrderData data) {
         self.data = data;

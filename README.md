@@ -24,30 +24,30 @@
         - Version: 1.0.0
         - Endpoint: http://localhost:8085
         - Resources
-         - GET - getCustomer/{id}
+         - GET - customers/{id}
     - ProductAPI
         - Context: /productapi
         - Version: 1.0.0
         - Endpoint: http://localhost:8085
         - Resources
-            - GET - getProduct/{id}
+            - GET - products/{id}
     - OrderAPI
         - Context: /orderapi
         - Version: 1.0.0
         - Endpoint: http://localhost:8085
         - Resources
-            - GET - getProduct/{id}
-            - POST - createOrder
+            - GET - products/{id}
+            - POST - order
 
 4. Start the GraphqlService and RestServicce
     ```
     bal run graphqldemo
     ```
 - REST Sevice:
-    - createOrderForLuckyCustomer(POST)
+    - orderForLuckyCustomer(POST)
         ```
-        curl --request POST 'http://localhost:8088/createOrderForLuckyCustomer' \
-        -d 'city="texas"'
+        curl --request POST 'http://localhost:8088/orderForLuckyCustomer' \
+        -d 'Colombo'
         ```
 - GraphQL Sevice:
     - GetOrderDeails with the customer and product details(Query)
@@ -56,7 +56,7 @@
         ```
    - createOrderForLuckyCustomer(Mutation)
         ```
-        curl -X POST -H "Content-type: application/json" -d '{ "query": "mutation { createOrderForLuckyCustomer(city: \"Mr. Lambert\") {     notes, date } }" }' 'http://localhost:8089/graphql'
+        curl -X POST -H "Content-type: application/json" -d '{ "query": "mutation { orderForLuckyCustomer(city: \"Mr. Lambert\") {     notes, date } }" }' 'http://localhost:8089/graphql'
         ```
 
 ## References

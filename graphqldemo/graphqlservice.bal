@@ -4,37 +4,30 @@ service /graphql on new graphql:Listener(8089) {
 
     resource function get 'order(int id) returns Order|error => loadOrder(id);
 
-    resource function get 'customer(int id) returns Customer|error => loadCustomer(id);
+    resource function get customer(int id) returns Customer|error => loadCustomer(id);
 
-    resource function get 'product(int id) returns Product|error => loadProduct(id);
+    resource function get product(int id) returns Product|error => loadProduct(id);
 
-    remote function createOrderForLuckyCustomer(string city) returns Order|error {
+    remote function orderForLuckyCustomer(string city) returns Order|error {
 
-        CustomerData|error luckyCustomer = check customerAPISecuredEP->get("/getCustomer/1");
-        ProductData|error promotionalProduct = check productAPISecuredEP->get("/getProduct/1");
+        CustomerData luckyCustomer = check customerAPISecuredEP->get("/customers/1");
+        ProductData promotionalProduct = check productAPISecuredEP->get("/products/1");
+        
+        json payload = {"id": 2, "customerId": luckyCustomer.id, "productId": promotionalProduct.id, "date": "2022/11/17", "notes": "luckyCustomer order"};
+        OrderData|error luckyCustomerOrder = orderAPISecuredEP->post("/order", payload);
 
-        if (luckyCustomer is CustomerData && promotionalProduct is ProductData) {
-
-            json payload = {"id": 2, "customerId": luckyCustomer.id, "productId": promotionalProduct.id, "date": "2022/11/17", "notes": "luckyCustomer order"};
-            OrderData|error luckyCustomerOrder = check orderAPISecuredEP->post("/createOrder", payload);
-
-            if (luckyCustomerOrder is OrderData) {
-                return new Order(luckyCustomerOrder);
-            } else {
-                return error(string `Lucky customer Order creation failed`);
-            }
-
+        if (luckyCustomerOrder is OrderData) {
+            return new Order(luckyCustomerOrder);
         } else {
-            return error(string `lucky customer order creation failed while retreiving data: ${city}`);
+            return error(string `Lucky customer Order creation failed`);
         }
-
     }
 
 }
 
 function loadOrder(int id) returns Order|error {
 
-    string path = "/getOrder/" + id.toString();
+    string path = "/orders/" + id.toString();
     OrderData orderDataResponse = check orderAPISecuredEP->get(path);
     int|error orderId = <int>orderDataResponse.id;
 
@@ -47,7 +40,7 @@ function loadOrder(int id) returns Order|error {
 
 function loadCustomer(int id) returns Customer|error {
 
-    string path = "/getCustomer/" + id.toString();
+    string path = "/customers/" + id.toString();
     CustomerData customerDataResponse = check customerAPISecuredEP->get(path);
     int|error customerId = <int>customerDataResponse.id;
 
@@ -60,7 +53,7 @@ function loadCustomer(int id) returns Customer|error {
 
 function loadProduct(int id) returns Product|error {
 
-    string path = "/getProduct/" + id.toString();
+    string path = "/products/" + id.toString();
     ProductData productDataResponse = check productAPISecuredEP->get(path);
     int|error productId = <int>productDataResponse.id;
 
