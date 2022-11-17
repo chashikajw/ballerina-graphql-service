@@ -1,6 +1,5 @@
 import ballerina/graphql;
 
-
 service /graphql on new graphql:Listener(8089) {
 
     resource function get 'order(int id) returns Order|error => loadOrder(id);
@@ -11,14 +10,22 @@ service /graphql on new graphql:Listener(8089) {
 
     remote function createOrderForLuckyCustomer(string city) returns Order|error {
 
-        CustomerData|error luckyCustomer = getCustomer(1);
-        ProductData|error promotionalProduct = getProduct(1);
+        CustomerData|error luckyCustomer = check customerAPISecuredEP->get("/getCustomer/1");
+        ProductData|error promotionalProduct = check productAPISecuredEP->get("/getProduct/1");
 
         if (luckyCustomer is CustomerData && promotionalProduct is ProductData) {
-            Order|error luckyCustomerOrder = createOrder(luckyCustomer, promotionalProduct);
-            return luckyCustomerOrder;
+
+            json payload = {"id": 2, "customerId": luckyCustomer.id, "productId": promotionalProduct.id, "date": "2022/11/17", "notes": "luckyCustomer order"};
+            OrderData|error luckyCustomerOrder = check orderAPISecuredEP->post("/createOrder", payload);
+
+            if (luckyCustomerOrder is OrderData) {
+                return new Order(luckyCustomerOrder);
+            } else {
+                return error(string `Lucky customer Order creation failed`);
+            }
+
         } else {
-            return error(string `Order creation failed`);
+            return error(string `lucky customer order creation failed while retreiving data: ${city}`);
         }
 
     }
@@ -27,31 +34,37 @@ service /graphql on new graphql:Listener(8089) {
 
 function loadOrder(int id) returns Order|error {
 
-    OrderData|error orderDataResponse = getOrder(id);
-    if (orderDataResponse is OrderData) { 
+    string path = "/getOrder/" + id.toString();
+    OrderData orderDataResponse = check orderAPISecuredEP->get(path);
+    int|error orderId = <int>orderDataResponse.id;
+
+    if (orderId is int) {
         return new Order(orderDataResponse);
     } else {
         return error(string `Invalid order: ${id}`);
     }
 }
 
-
 function loadCustomer(int id) returns Customer|error {
 
-    CustomerData|error customerDataResponse = getCustomer(id);
-    if (customerDataResponse is CustomerData) { 
+    string path = "/getCustomer/" + id.toString();
+    CustomerData customerDataResponse = check customerAPISecuredEP->get(path);
+    int|error customerId = <int>customerDataResponse.id;
+
+    if (customerId is int) {
         return new Customer(customerDataResponse);
     } else {
         return error(string `Invalid customer: ${id}`);
     }
 }
 
-
 function loadProduct(int id) returns Product|error {
 
-    ProductData|error productDataResponse = getProduct(id);
+    string path = "/getProduct/" + id.toString();
+    ProductData productDataResponse = check productAPISecuredEP->get(path);
+    int|error productId = <int>productDataResponse.id;
 
-    if (productDataResponse is ProductData) { 
+    if (productId is int) {
         return new Product(productDataResponse);
     } else {
         return error(string `Invalid product: ${id}`);
